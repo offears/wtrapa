@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мой сайт</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Onest:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: "Onest", "Segoe UI", Helvetica, Arial, sans-serif;
+    font-weight: 300;
+    color: #fff;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* Фоновое видео */
+  .bg-video {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+  }
+
+  /* Лёгкое затемнение, чтобы текст читался */
+  .shade {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    z-index: -1;
+  }
+
+  /* Три колонки строго слева направо, по центру */
+  .columns {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+  }
+
+  .column {
+    flex: 0 0 auto;
+    width: 220px;
+    height: 55vh;
+    min-width: 0;
+    padding: 24px 20px;
+    background: rgba(255, 255, 255, 0.22);   /* бело-прозрачный фон */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.35s ease, background 0.35s ease, opacity 0.5s ease,
+                border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  /* Анимация при наведении */
+  .column:hover {
+    transform: translateY(-14px) scale(1.05);
+    background: rgba(255, 255, 255, 0.38);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35),
+                0 0 24px rgba(255, 255, 255, 0.35);
+  }
+
+  .column h2 {
+    transition: letter-spacing 0.35s ease;
+  }
+
+  .column:hover h2 {
+    letter-spacing: 0.05em;
+  }
+
+  /* Переход на другую страницу */
+  .wipe {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    clip-path: circle(0 at var(--x, 50%) var(--y, 50%));
+    transition: clip-path 0.65s ease-in;
+  }
+
+  .leaving .wipe {
+    clip-path: circle(150% at var(--x, 50%) var(--y, 50%));
+  }
+
+  .leaving .column:not(.active) {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .column, .column h2, .wipe { transition: none; }
+    .column:hover { transform: none; }
+  }
+
+  .column h2 {
+    font-family: "Unbounded", "Arial Black", sans-serif;
+    font-size: clamp(1.1rem, 2.4vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  .column p {
+    margin-top: 16px;
+    font-size: 1rem;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    opacity: 0.9;
+  }
+
+  /* На телефоне колонки остаются в ряд, просто компактнее */
+  @media (max-width: 600px) {
+    .columns { gap: 6px; padding: 12px; }
+    .column { width: calc((100vw - 24px - 12px) / 3); height: 45vh; padding: 14px 8px; border-radius: 10px; }
+    .column p { font-size: 0.75rem; }
+    .column h2 { font-size: 0.75rem; letter-spacing: 0; }
+  }
+</style>
+</head>
+<body>
+
+  <video class="bg-video" src="prir1.mp4" autoplay muted loop playsinline></video>
+  <div class="shade"></div>
+
+  <div class="wipe"></div>
+
+  <main class="columns">
+    <a class="column" href="works.html">
+      <h2>works</h2>
+      <p>Здесь будут ваши работы.</p>
+    </a>
+
+    <a class="column" href="price.html">
+      <h2>price</h2>
+      <p>Здесь будут цены.</p>
+    </a>
+
+    <a class="column" href="contact.html">
+      <h2>contact</h2>
+      <p>Здесь будут контакты.</p>
+    </a>
+  </main>
+
+  <script>
+    const wipe = document.querySelector('.wipe');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    document.querySelectorAll('a.column').forEach(link => {
+      link.addEventListener('click', e => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        if (reduce) { location.href = link.href; return; }
+        wipe.style.setProperty('--x', e.clientX + 'px');
+        wipe.style.setProperty('--y', e.clientY + 'px');
+        link.classList.add('active');
+        document.body.classList.add('leaving');
+        setTimeout(() => { location.href = link.href; }, 650);
+      });
+    });
+
+    // при возврате кнопкой «назад» убираем переход
+    window.addEventListener('pageshow', e => {
+      if (e.persisted) {
+        document.body.classList.remove('leaving');
+        document.querySelectorAll('.column.active').forEach(c => c.classList.remove('active'));
+      }
+    });
+  </script>
+  <script src="player.js" defer></script>
+</body>
+</html>

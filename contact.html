@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>contact</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600&family=Onest:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <video class="bg-video" src="prir1.mp4" autoplay muted loop playsinline></video>
+  <div class="shade"></div>
+
+  <main class="page">
+    <section class="panel">
+      <h1>contact</h1>
+      <ul class="rows">
+        <li class="row"><span>Telegram</span><a href="https://t.me/called_from_hell" target="_blank" rel="noopener">@called_from_hell</a></li>
+        <li class="row"><span>Discord</span><button type="button" id="copy" data-nick="forglucky">forglucky</button></li>
+        <li class="row"><span>TikTok</span><a href="https://www.tiktok.com/@codextrap" target="_blank" rel="noopener">@codextrap</a></li>
+      </ul>
+      <a class="back" href="index.html">назад</a>
+    </section>
+  </main>
+  <script>
+    const btn = document.getElementById('copy');
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(btn.dataset.nick);
+        btn.textContent = 'скопировано';
+      } catch (e) {
+        btn.textContent = btn.dataset.nick;
+      }
+      setTimeout(() => { btn.textContent = btn.dataset.nick; }, 1500);
+    });
+  </script>
+  <script src="player.js" defer></script>
+</body>
+</html>
