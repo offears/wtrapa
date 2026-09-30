@@ -175,7 +175,7 @@
     if (live) {
       let s = 0;
       for (let i = 0; i < 6; i++) s += data[i];
-      tb = Math.max(0, (s / 6 / 255 - 0.45) / 0.55);
+      tb = Math.max(0, (s / 6 / 95 - 0.45) / 0.55);
     }
     bass += (tb - bass) * 0.3;
     document.documentElement.style.setProperty('--bass', bass.toFixed(3));
